@@ -19,7 +19,7 @@ import com.digit.ncs.setting.service.InitSettingService;
 import com.digit.ncs.setting.service.ServiceSetting;
 
 @SuppressWarnings("serial")
-public class SettingFrame extends JFrame implements ActionListener {
+public class SettingUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JButton btnInit;
@@ -33,7 +33,7 @@ public class SettingFrame extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SettingFrame frame = new SettingFrame();
+					SettingUI frame = new SettingUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +45,7 @@ public class SettingFrame extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public SettingFrame() {
+	public SettingUI() {
 		setTitle("DB관리메뉴");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 425, 99);
