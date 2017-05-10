@@ -19,7 +19,7 @@ public class TableDao {
 		return instance;
 	}
 
-	public void createTable(String sql) {
+	public void createTable(String sql) throws SQLException {
 		Connection con = DBCon.getConnection();
 
 		try {
@@ -29,6 +29,7 @@ public class TableDao {
 		} catch (SQLException e) {
 			System.out.printf("CREATE TABLE(%s) Fail! %n", sql.substring(13, sql.indexOf("(")));
 			e.printStackTrace();
+			throw new SQLException();
 		} finally {
 			JdbcUtil.close(pstmt);
 		}

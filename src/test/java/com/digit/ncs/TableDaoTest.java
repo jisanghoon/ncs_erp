@@ -1,5 +1,9 @@
 package com.digit.ncs;
 
+import static org.junit.Assert.fail;
+
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +17,8 @@ public class TableDaoTest {
 
 	@Before
 	public void setUp() throws Exception {
-		dao = TableDao.getInstance();
-		DataBaseDao.getInstance().createDatabase();
 		DataBaseDao.getInstance().selectUseDatabase();
+		dao = TableDao.getInstance();
 	}
 
 	@After
@@ -24,11 +27,14 @@ public class TableDaoTest {
 
 	@Test
 	public void testCreateTable() {
+		String[] TableSQL = Config.CREATE_SQL;
 
-		for (String table : Config.CREATE_SQL) {
-
-			dao.createTable(table);
-
+		for (int i = 0; i < TableSQL.length; i++) {
+			try {
+				dao.createTable(TableSQL[i]);
+			} catch (SQLException e) {
+				fail("Can't Creat " + Config.TABLE_NAME[i] + " Table");
+			}
 		}
 	}
 

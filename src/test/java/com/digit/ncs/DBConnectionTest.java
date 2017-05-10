@@ -7,15 +7,10 @@ import com.digit.ncs.setting.jdbc.DBCon;
 public class DBConnectionTest {
 
 	@Test
-	public void test() {
-		// fail("Not yet implemented");
-	}
-
-	@Test
 	public void testGetConnection() {
 		DBCon.getConnection();
 	}
-	
+
 	@Test
 	public void testCloseConnection() {
 		DBCon.closeConnection();

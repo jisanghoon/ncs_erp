@@ -1,5 +1,5 @@
 package com.digit.ncs;
 
-public class Test {
+public class TE {
 
 }

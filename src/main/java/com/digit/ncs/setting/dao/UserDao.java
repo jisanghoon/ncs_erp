@@ -10,20 +10,21 @@ import com.digit.ncs.setting.jdbc.JdbcUtil;
 
 public class UserDao {
 	private static UserDao instance = new UserDao();
-	
-	private UserDao() {}
+
+	private UserDao() {
+	}
 
 	public static UserDao getInstance() {
 		return instance;
 	}
 
-	public void initUser(){
-		createUser();
-		grantUser();
-//		createUserAndGrant();
+	public void initUser() throws SQLException {
+		 createUser();
+		 grantUser();
+		//createUserAndGrant();
 	}
-	
-	private void createUser(){
+
+	private void createUser() throws SQLException{
 		String sql = "create user ? identified by ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -38,12 +39,14 @@ public class UserDao {
 				System.err.printf("User(%s) exists!%n", Config.PJT_USER);
 				dropUser();
 				createUser();
+			}else{
+				throw new SQLException(e.getCause());
 			}
 		} finally {
 			JdbcUtil.close(pstmt);
 		}
 	}
-	
+
 	/* 계정 삭제 */
 	public void dropUser() {
 		String sql = "drop user ?";
@@ -56,15 +59,17 @@ public class UserDao {
 			System.out.printf("Drop User(%s) Success! %n", Config.PJT_USER);
 		} catch (SQLException e) {
 			System.err.printf("Drop User(%s) Fail! %n", Config.PJT_USER);
+			
 		} finally {
 			JdbcUtil.close(pstmt);
 		}
 	}
 
-	/* 계정에 대한 권한 Config.DB_NAME에 해당하는 데이터베이스만 select, insert
-	 * update, delete권한 만 부여 
-	 * */
-	public void grantUser() {
+	/*
+	 * 계정에 대한 권한 Config.DB_NAME에 해당하는 데이터베이스만 select, insert update, delete권한 만
+	 * 부여
+	 */
+	public void grantUser() throws SQLException {
 		String sql = "grant select, insert, update, delete on " + Config.DB_NAME + ".* to ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -75,6 +80,7 @@ public class UserDao {
 			System.out.printf("Grant User(%s) Success! %n", Config.PJT_USER);
 		} catch (SQLException e) {
 			System.err.printf("Grant User(%s) Fail! %n", Config.PJT_USER);
+			throw new SQLException(e.getCause());
 		} finally {
 			JdbcUtil.close(pstmt);
 		}
@@ -85,7 +91,7 @@ public class UserDao {
 	 * 
 	 */
 	private void createUserAndGrant() {
-		String sql = "grant select, insert, update, delete on " + Config.DB_NAME+ ".* to ? identified by ?";
+		String sql = "grant select, insert, update, delete on " + Config.DB_NAME + ".* to ? identified by ?";
 		PreparedStatement pstmt = null;
 		try {
 			Connection con = DBCon.getConnection();
